@@ -4,7 +4,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AKIAVEXFCGVWKZTFN54Y')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        TF_region = 'ap-south-1'
+        TF_region = 'ap-southeast-1'
         TF_bucket = 'sonix.23'
         TF_VAR_key_name = 'Sample'
         TF_VAR_instance_type = 't2.micro'
