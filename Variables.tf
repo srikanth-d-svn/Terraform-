@@ -1,6 +1,6 @@
 variable "ami" {
   description = "EC2 instance AMI ID"
-  default     = "ami-02a2af70a66af6dfb"
+  default     = "ami-02453f5468b897e31"
 }
 
 variable "instance_type" {
@@ -11,7 +11,7 @@ variable "instance_type" {
 variable "availability_zone" {
   description = "The availability zone for the EC2 instance."
   type        = string
-  default     = "ap-south-1a"
+  default     = "ap-southeast-1"
 }
 
 variable "iam_instance_profile" {
@@ -32,7 +32,7 @@ variable "security_groups" {
 
 variable "subnet_id" {
   description = "The subnet ID for the EC2 instance"
-  default     = "subnet-0fdd3060d191dec0b"  # Update with a valid subnet ID
+  default     = "subnet-01b488c9e3edc88bd"  # Update with a valid subnet ID
 }
 
 variable "tags" {
@@ -45,7 +45,7 @@ variable "tags" {
 
 variable "region" {
   type    = string
-  default = "ap-south-1"
+  default = "ap-southeast-1"
 }
 
 variable "s3_bucket" {
