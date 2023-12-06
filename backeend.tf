@@ -1,7 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "pavanssonixbucket1"
-    key            = "terraform.tfstate"
+    bucket         = "sonix.23"
     region         = "ap-south-1"
     encrypt        = true
     dynamodb_table = "terraform-lock"
