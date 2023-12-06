@@ -8,7 +8,7 @@ pipeline {
         TF_bucket = 'sonix.23'
         TF_VAR_key_name = 'Sample'
         TF_VAR_instance_type = 't2.micro'
-        GITHUB_REPO_URL = 'https://github.com/pavankumarindian/Jenkins-Terraform-EC2-S3-Infrastructure.git'
+        GITHUB_REPO_URL = 'https://github.com/srikanth-d-svn/Terraform-.git'
     }
 
     stages {
