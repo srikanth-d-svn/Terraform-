@@ -1,43 +1,54 @@
 pipeline {
-    agent any
 
+    parameters {
+        booleanParam(name: 'autoApprove', defaultValue: false, description: 'Automatically run apply after generating plan?')
+    } 
     environment {
         AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        TF_region = 'ap-southeast-1'
-        TF_bucket = 'sonix.23'
-        TF_VAR_key_name = 'Sample'
-        TF_VAR_instance_type = 't2.micro'
-        GITHUB_REPO_URL = 'https://github.com/srikanth-d-svn/Terraform-.git'
     }
 
+   agent  any
     stages {
-        stage('Checkout') {
+        stage('checkout') {
             steps {
-                script {
-                    git branch: 'main', url: GITHUB_REPO_URL
+                 script{
+                        dir("terraform")
+                        {
+                            git "https://github.com/yeshwanthlm/Terraform-Jenkins.git"
+                        }
+                    }
                 }
             }
-        }
 
-        stage('Terraform Init') {
+        stage('Plan') {
             steps {
-                script {
-                    sh 'terraform init -input=false tfplan'
-                }
+                sh 'pwd;cd terraform/ ; terraform init'
+                sh "pwd;cd terraform/ ; terraform plan -out tfplan"
+                sh 'pwd;cd terraform/ ; terraform show -no-color tfplan > tfplan.txt'
             }
         }
+        stage('Approval') {
+           when {
+               not {
+                   equals expected: true, actual: params.autoApprove
+               }
+           }
 
-        stage('Terraform Destroy') {
+           steps {
+               script {
+                    def plan = readFile 'terraform/tfplan.txt'
+                    input message: "Do you want to apply the plan?",
+                    parameters: [text(name: 'Plan', description: 'Please review the plan', defaultValue: plan)]
+               }
+           }
+       }
+
+        stage('Apply') {
             steps {
-                script {
-                    sh "terraform destroy -auto-approve \
-                        -var 'region=${TF_region}' \
-                        -var 's3_bucket=${TF_bucket}' \
-                        -var 'key_name=${TF_VAR_key_name}' \
-                        -var 'instance_type=${TF_VAR_instance_type}'"
-                }
+                sh "pwd;cd terraform/ ; terraform apply -input=false tfplan"
             }
         }
     }
-}
+
+  }
